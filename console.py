@@ -20,6 +20,29 @@ class HBNBCommand(cmd.Cmd):
     all_classes = {"BaseModel", "User", "State", "City",
                    "Amenity", "Place", "Review"}
 
+    @classmethod
+    def verify_attribute(cls, attribute):
+        """verifies that an attribute is correctly formatted"""
+        if attribute[0] is attribute[-1] is '"':
+            for i, c in enumerate(attribute[1:-1]):
+                if c is '"' and attribute[i - 1] is not '\\':
+                    return None
+            return attribute
+        else:
+            flag = 0
+            allowed = "0123456789."
+            for c in attribute:
+                if c not in allowed:
+                    return None
+                if c is '.' and flag == 1:
+                    return None
+                elif c is '.' and flag == 0:
+                    flag = 1
+            if flag == 1:
+                return float(attribute)
+            else:
+                return int(attribute)
+
     def emptyline(self):
         """Ignores empty spaces"""
         pass
@@ -44,12 +67,20 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             obj.save()
+            for attr in my_list[1:]:
+                my_att = attr.split('=')
+                print(my_att[1])
+                casted = HBNBCommand.verify_attribute(my_att[1])
+                if not casted:
+                    continue
+                setattr(obj, my_att[0], casted)
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
-        except NameError:
+        except NameError as e:
             print("** class doesn't exist **")
-
+            print(e)
+            
     def do_show(self, line):
         """Prints the string representation of an instance
         Exceptions:
