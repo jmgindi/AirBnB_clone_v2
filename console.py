@@ -69,7 +69,6 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
             for attr in my_list[1:]:
                 my_att = attr.split('=')
-                print(my_att[1])
                 casted = HBNBCommand.verify_attribute(my_att[1])
                 if not casted:
                     continue
