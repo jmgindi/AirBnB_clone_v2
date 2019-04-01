@@ -23,7 +23,7 @@ class DBStorage:
         __file_path: path to the JSON file
         __objects: objects will be stored
     """
-    __classes = [ State, City ]
+    __classes = [State, City]
     __engine = None
     __session = None
     # SETUP RELATIONSHIP WITH City => State TODO
@@ -66,7 +66,7 @@ class DBStorage:
         """
         results = []
         if cls is None:
-             for c in self.__classes:
+            for c in self.__classes:
                 for result in self.__session.query(c):
                     results.append(result)
         else:
@@ -104,7 +104,7 @@ class DBStorage:
         try:
             Base.metadata.create_all(self.__engine)
             session_factory = sessionmaker(bind=self.__engine,
-                                   expire_on_commit=False)
+                                           expire_on_commit=False)
             Session = scoped_session(session_factory)
             self.__session = Session()
         except:
