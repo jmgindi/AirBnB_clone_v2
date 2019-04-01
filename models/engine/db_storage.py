@@ -26,6 +26,7 @@ class DBStorage:
     __classes = [ State, City ]
     __engine = None
     __session = None
+    # SETUP RELATIONSHIP WITH City => State TODO
 
     def __init__(self):
         """init function for dbstorage to initialize engine and
@@ -71,7 +72,7 @@ class DBStorage:
         else:
             result = self.__session.query(cls)
             results = result.all()
-        # TODO fix return to return dictionary properly
+        # return the results as a dictionary with class.id as key
         return {"{}.{}".format(result.__class__.__name__, result.id): result
                 for result in results}
 
