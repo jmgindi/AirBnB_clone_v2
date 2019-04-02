@@ -23,7 +23,7 @@ class DBStorage:
         __file_path: path to the JSON file
         __objects: objects will be stored
     """
-    __classes = [State, City]
+    __classes = [State, City, User, Place]
     __engine = None
     __session = None
     # SETUP RELATIONSHIP WITH City => State TODO
@@ -93,6 +93,7 @@ class DBStorage:
         """deletes an object from __objects if inside
         """
         try:
+            print("Baleeting...")
             self.__session.delete(obj)
         except:
             pass

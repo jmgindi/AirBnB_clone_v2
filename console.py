@@ -11,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+from os import environ
 
 
 class HBNBCommand(cmd.Cmd):
@@ -65,7 +66,6 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            print(my_list)
             obj = eval("{}()".format(my_list[0]))
             for attr in my_list[1:]:
                 my_att = attr.split('=')
@@ -131,6 +131,8 @@ class HBNBCommand(cmd.Cmd):
             objects = storage.all()
             key = my_list[0] + '.' + my_list[1]
             if key in objects:
+                if environ.get('HBNB_TYPE_STORAGE') == 'db':
+                    storage.delete(objects[key])
                 del objects[key]
                 storage.save()
             else:
