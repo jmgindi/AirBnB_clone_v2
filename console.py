@@ -31,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
             return attribute.strip('"')
         else:
             flag = 0
-            allowed = "0123456789."
+            allowed = "0123456789.-"
             for c in attribute:
                 if c not in allowed:
                     return None
