@@ -2,6 +2,8 @@
 """This is the state class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
+from os import environ
 
 class State(BaseModel, Base):
     """This is the class for State
@@ -10,3 +12,14 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
+    cities = None
+    
+    if environ.get('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship(
+            "City", backref="state", cascade="all, delete-orphan")
+
+    @property
+    def cities(self):
+        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+            return [city for city in storage.all(
+                City).values() if city.state_id == self.id]
