@@ -52,8 +52,7 @@ class DBStorage:
 
             # drop all tables in DB if test env
             if env == 'test':
-                for table in Base.metadata.sorted_tables:
-                    table.drop(checkfirst=True)
+                Base.metadata.drop_all(bind=self.__engine, checkfirst=True)
         except Exception as E:
             print("raised exception in init")
             print(E)

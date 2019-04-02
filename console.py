@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
             for i, c in enumerate(attribute[1:-1]):
                 if c is '"' and attribute[i - 1] is not '\\':
                     return None
-            return attribute
+            return attribute.strip('"')
         else:
             flag = 0
             allowed = "0123456789."
@@ -65,14 +65,15 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
+            print(my_list)
             obj = eval("{}()".format(my_list[0]))
-            obj.save()
             for attr in my_list[1:]:
                 my_att = attr.split('=')
                 casted = HBNBCommand.verify_attribute(my_att[1])
                 if not casted:
                     continue
                 setattr(obj, my_att[0], casted)
+            obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
