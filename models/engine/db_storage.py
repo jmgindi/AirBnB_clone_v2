@@ -93,7 +93,6 @@ class DBStorage:
         """deletes an object from __objects if inside
         """
         try:
-            print("Baleeting...")
             self.__session.delete(obj)
         except:
             pass
