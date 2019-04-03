@@ -5,6 +5,8 @@ import models
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from hashlib import md5
+
 
 Base = declarative_base()
 
@@ -64,13 +66,15 @@ class BaseModel():
         """
         my_dict = {k: v for k, v in dict(
             self.__dict__).items() if k != "_sa_instance_state"}
+        if my_dict.get("password"):
+            my_dict["password"] = md5(my_dict["password"].encode("utf-8")).hexdigest()
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict
 
 
-    def delete(self):
-        """deletes the object from FileStorage.__objects
-        """
-        models.storage.delete(self)
+    def delete(self): 
+       """deletes the object from FileStorage.__objects
+       """
+       models.storage.delete(self)
