@@ -30,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
                     return None
                 if c is " ":
                     return None
-            return attribute.strip('"')
+            return attribute.strip('"').replace('_', ' ')
         else:
             flag = 0
             allowed = "0123456789.-"
@@ -71,7 +71,10 @@ class HBNBCommand(cmd.Cmd):
             obj = eval("{}()".format(my_list[0]))
             for attr in my_list[1:]:
                 my_att = attr.split('=')
-                casted = HBNBCommand.verify_attribute(my_att[1])
+                try:
+                    casted = HBNBCommand.verify_attribute(my_att[1])
+                except:
+                    continue
                 if not casted:
                     continue
                 setattr(obj, my_att[0], casted)
