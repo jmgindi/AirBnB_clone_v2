@@ -9,13 +9,15 @@ from models.amenity import Amenity
 
 metadata = Base.metadata
 
-place_amenities = Table('place_amenities', metadata,
+place_amenity = Table('place_amenity', metadata,
                         Column('place_id',
                                String(60),
-                               ForeignKey('places.id')),
+                               ForeignKey('places.id',
+                                          ondelete='CASCADE')),
                         Column('amenity_id',
                                String(60),
-                               ForeignKey('amenities.id')))
+                               ForeignKey('amenities.id',
+                                          ondelete='CASCADE')))
 
 
 class Place(BaseModel, Base):
@@ -55,24 +57,26 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan',
                                passive_deletes=True)
-        amenities = relationship('Amenity', backref='amenity',
-                                 cascade='all, delete-orphan',
+        amenities = relationship('Amenity', backref='place_amenities',
+                                 cascade='all, delete',
+                                 secondary=place_amenity,
+                                 viewonly=False,
                                  passive_deletes=True)
 
-    @property
-    def reviews(self):
-        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+
+    if environ.get('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def reviews(self):
             return [review for review in storage.all(Review).values()
                     if review.place_id == self.id]
 
-    @property
-    def amenities(self):
-        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def amenities(self):
             return [amenity for amenity in storage.all(Amenity).values()
                     if amenity.place_id == self.id]
 
-    @amenities.setter
-    def amenities(self, obj):
-        if not isinstance(obj, Amenity):
-            return
-        self.amenity_ids.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj):
+            if not isinstance(obj, Amenity):
+                return
+            self.amenity_ids.append(obj.id)
