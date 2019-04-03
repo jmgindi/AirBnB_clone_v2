@@ -6,6 +6,7 @@ from models.city import City
 from models.base_model import BaseModel
 import pep8
 
+env = os.environ.get('HBNB_TYPE_STORAGE')
 
 class TestCity(unittest.TestCase):
     """this will test the city class"""
@@ -56,6 +57,7 @@ class TestCity(unittest.TestCase):
         self.assertEqual(type(self.city.name), str)
         self.assertEqual(type(self.city.state_id), str)
 
+    @unittest.skipIf(env == 'db', "filestorage not in use")
     def test_save_City(self):
         """test if the save works"""
         self.city.save()

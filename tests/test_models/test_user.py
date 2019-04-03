@@ -6,6 +6,7 @@ from models.user import User
 from models.base_model import BaseModel
 import pep8
 
+env = os.environ.get('HBNB_TYPE_STORAGE')
 
 class TestUser(unittest.TestCase):
     """this will test the User class"""
@@ -62,6 +63,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(self.user.first_name), str)
         self.assertEqual(type(self.user.first_name), str)
 
+    @unittest.skipIf(env == 'db', "filestorage not in use")
     def test_save_User(self):
         """test if the save works"""
         self.user.save()
