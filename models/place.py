@@ -1,9 +1,21 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Float, Integer, ForeignKey
+from sqlalchemy import Column, String, Float, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import environ
+from models.amenity import Amenity
+
+
+metadata = Base.metadata
+
+place_amenities = Table('place_amenities', metadata,
+                        Column('place_id',
+                               String(60),
+                               ForeignKey('places.id')),
+                        Column('amenity_id',
+                               String(60),
+                               ForeignKey('amenities.id')))
 
 
 class Place(BaseModel, Base):
@@ -43,9 +55,24 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan',
                                passive_deletes=True)
+        amenities = relationship('Amenity', backref='amenity',
+                                 cascade='all, delete-orphan',
+                                 passive_deletes=True)
 
     @property
     def reviews(self):
         if environ.get('HBNB_TYPE_STORAGE') != 'db':
             return [review for review in storage.all(Review).values()
                     if review.place_id == self.id]
+
+    @property
+    def amenities(self):
+        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+            return [amenity for amenity in storage.all(Amenity).values()
+                    if amenity.place_id == self.id]
+
+    @amenities.setter
+    def amenities(self, obj):
+        if not isinstance(obj, Amenity):
+            return
+        self.amenity_ids.append(obj.id)
