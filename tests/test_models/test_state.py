@@ -63,19 +63,6 @@ class TestState(unittest.TestCase):
         self.state.save()
         self.assertNotEqual(self.state.created_at, self.state.updated_at)
 
-    @unittest.skipIf(env != 'db', "filestorage in use")
-    def test_save_state_db(self):
-        """test db update"""
-        self.state.save()
-        db = MySQLdb.connect(
-            host='localhost',
-            user='hbnb_test',
-            passwd='hbnb_test_pwd',
-            db='hbnb_test_db')
-        cur = db.cursor()
-        cur.execute("SELECT * FROM states")
-        self.assertNotEqual(0, len(cur.fetchall()))
-
     def test_to_dict_State(self):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.state), True)
