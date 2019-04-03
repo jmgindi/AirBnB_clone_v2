@@ -23,7 +23,7 @@ class DBStorage:
         __file_path: path to the JSON file
         __objects: objects will be stored
     """
-    __classes = [State, City, User, Place, Review]
+    __classes = [State, City, User, Place, Review, Amenity]
     __engine = None
     __session = None
     # SETUP RELATIONSHIP WITH City => State TODO
