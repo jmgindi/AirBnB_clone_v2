@@ -2,6 +2,9 @@
 """This is the place class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+from os import environ
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -19,8 +22,14 @@ class Place(BaseModel, Base):
         amenity_ids: list of Amenity ids
     """
     __tablename__ = 'places'
-    city_id = Column(String(60), ForeignKey('cities.id', ondelete='CASCADE'), nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    city_id = Column(String(60),
+                     ForeignKey('cities.id',
+                                ondelete='CASCADE'),
+                     nullable=False)
+    user_id = Column(String(60),
+                     ForeignKey('users.id',
+                                ondelete='CASCADE'),
+                     nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     number_rooms = Column(Integer, nullable=False, default=0)
@@ -30,3 +39,13 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    if environ.get('HBNB_TYPE_STORAGE') == 'db':
+        reviews = relationship('Review', backref='place',
+                               cascade='all, delete-orphan',
+                               passive_deletes=True)
+
+    @property
+    def reviews(self):
+        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+            return [review for review in storage.all(Review).values()
+                    if review.place_id == self.id]
