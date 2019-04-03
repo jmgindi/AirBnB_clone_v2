@@ -44,8 +44,10 @@ class BaseModel():
         Return:
             returns a string of class name, id, and dictionary
         """
+        my_dict = self.to_dict().copy()
+        del my_dict["__class__"]
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.to_dict())
+            type(self).__name__, self.id, my_dict)
 
     def __repr__(self):
         """return a string representaion
@@ -66,8 +68,6 @@ class BaseModel():
         """
         my_dict = {k: v for k, v in dict(
             self.__dict__).items() if k != "_sa_instance_state"}
-        if my_dict.get("password"):
-            my_dict["password"] = md5(my_dict["password"].encode("utf-8")).hexdigest()
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
