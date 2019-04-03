@@ -10,14 +10,14 @@ from models.amenity import Amenity
 metadata = Base.metadata
 
 place_amenity = Table('place_amenity', metadata,
-                        Column('place_id',
-                               String(60),
-                               ForeignKey('places.id',
-                                          ondelete='CASCADE')),
-                        Column('amenity_id',
-                               String(60),
-                               ForeignKey('amenities.id',
-                                          ondelete='CASCADE')))
+                      Column('place_id',
+                             String(60),
+                             ForeignKey('places.id',
+                                        ondelete='CASCADE')),
+                      Column('amenity_id',
+                             String(60),
+                             ForeignKey('amenities.id',
+                                        ondelete='CASCADE')))
 
 
 class Place(BaseModel, Base):
@@ -62,7 +62,6 @@ class Place(BaseModel, Base):
                                  secondary=place_amenity,
                                  viewonly=False,
                                  passive_deletes=True)
-
 
     if environ.get('HBNB_TYPE_STORAGE') != 'db':
         @property
