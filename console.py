@@ -28,6 +28,8 @@ class HBNBCommand(cmd.Cmd):
             for i, c in enumerate(attribute[1:-1]):
                 if c is '"' and attribute[i - 1] is not '\\':
                     return None
+                if c is " ":
+                    return None
             return attribute.strip('"')
         else:
             flag = 0
