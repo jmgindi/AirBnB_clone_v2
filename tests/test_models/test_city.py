@@ -6,7 +6,9 @@ from models.city import City
 from models.base_model import BaseModel
 import pep8
 
+
 env = os.environ.get('HBNB_TYPE_STORAGE')
+
 
 class TestCity(unittest.TestCase):
     """this will test the city class"""

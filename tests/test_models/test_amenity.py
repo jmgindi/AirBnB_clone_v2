@@ -6,7 +6,9 @@ from models.amenity import Amenity
 from models.base_model import BaseModel
 import pep8
 
+
 env = os.environ.get('HBNB_TYPE_STORAGE')
+
 
 class TestAmenity(unittest.TestCase):
     """this will test the Amenity class"""
