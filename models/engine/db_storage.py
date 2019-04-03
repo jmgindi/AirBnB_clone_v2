@@ -44,7 +44,7 @@ class DBStorage:
             for attr in mandatory:
                 if attr is None:
                     print("Missing mandatory env var")
-                    exit(1)
+
             conn_str = "mysql+mysqldb://{}:{}@{}/{}".format(
                         user, password, host, db)
             # create engine and session object with connection string
@@ -56,7 +56,6 @@ class DBStorage:
         except Exception as E:
             print("raised exception in init")
             print(E)
-            exit(1)
 
     def all(self, cls=None):
         """returns a dictionary
