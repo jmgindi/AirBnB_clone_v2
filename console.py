@@ -28,11 +28,9 @@ class HBNBCommand(cmd.Cmd):
             for i, c in enumerate(attribute[1:-1]):
                 if c is '"' and attribute[i] is not '\\':
                     return None
-                elif c is '"' and attribute[i] is '\\':
-                    attribute = attribute[:i] + attribute[i + 1:] 
                 if c is " ":
                     return None
-            return attribute.strip('"').replace('_', ' ')
+            return attribute.strip('"').replace('_', ' ').replace("\\\"", "\"")
         else:
             flag = 0
             allowed = "0123456789.-"
@@ -87,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         except NameError as e:
             print("** class doesn't exist **")
             print(e)
-            
+
     def do_show(self, line):
         """Prints the string representation of an instance
         Exceptions:
