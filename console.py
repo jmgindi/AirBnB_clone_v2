@@ -26,8 +26,10 @@ class HBNBCommand(cmd.Cmd):
         """verifies that an attribute is correctly formatted"""
         if attribute[0] is attribute[-1] is '"':
             for i, c in enumerate(attribute[1:-1]):
-                if c is '"' and attribute[i - 1] is not '\\':
+                if c is '"' and attribute[i] is not '\\':
                     return None
+                elif c is '"' and attribute[i] is '\\':
+                    attribute = attribute[:i] + attribute[i + 1:] 
                 if c is " ":
                     return None
             return attribute.strip('"').replace('_', ' ')
