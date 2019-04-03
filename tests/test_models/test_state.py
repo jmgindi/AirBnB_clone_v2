@@ -65,7 +65,7 @@ class TestState(unittest.TestCase):
 
     @unittest.skipIf(env != 'db', "filestorage in use")
     def test_save_state_db(self):
-        """test db update"""        
+        """test db update"""
         self.state.save()
         db = MySQLdb.connect(
             host='localhost',
