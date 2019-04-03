@@ -10,6 +10,7 @@ from hashlib import md5
 
 Base = declarative_base()
 
+
 class BaseModel():
     """This class will defines all common attributes/methods
     for other classes
@@ -73,8 +74,7 @@ class BaseModel():
         my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict
 
-
-    def delete(self): 
-       """deletes the object from FileStorage.__objects
-       """
-       models.storage.delete(self)
+    def delete(self):
+        """deletes the object from FileStorage.__objects
+        """
+        models.storage.delete(self)
