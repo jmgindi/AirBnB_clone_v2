@@ -10,7 +10,7 @@ def do_pack():
     time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     local("mkdir -p versions")
     command = local("tar -czvf versions/web_static_{}.tgz web_static"
-               .format(time))
+                    .format(time))
     if command.failed:
         return None
     else:
