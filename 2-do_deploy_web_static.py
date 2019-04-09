@@ -55,17 +55,18 @@ def do_deploy(archive_path):
     if status_3.failed:
         return False
 
-    status_4 = run("rm -rf /data/web_static/releases/{}/web_static"
-                   .format(server_path))
+    status_4 = run("rm -rf /data/web_static/current")
     if status_4.failed:
         return False
 
     status_5 = run(
-        "ln -sf /data/web_static/releases/{}/ " +
+        "ln -sf /data/web_static/releases/{}/ "
+        .format(server_path) +
         "/data/web_static/current"
-        .format(server_path)
     )
     if status_5.failed:
         return False
+
+    sudo("sudo service nginx restart")
 
     return True
