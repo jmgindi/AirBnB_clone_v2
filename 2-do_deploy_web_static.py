@@ -32,7 +32,8 @@ def do_deploy(archive_path):
         return False
 
     server_path = archive_path.split("/")[-1].split('.')[0]
-    status_2 = run("mkdir -p /data/web_static/releases/{}/".format(server_path))
+    status_2 = run("mkdir -p /data/web_static/releases/{}/"
+                   .format(server_path))
     if status_2.failed:
         return False
 
@@ -42,7 +43,8 @@ def do_deploy(archive_path):
     )
     run("rm -rf /tmp/{}".format(server_path))
     run(
-        "mv /data/web_static/releases/{}/web_static/* ".format(server_path) +
+        "mv -n /data/web_static/releases/{}/web_static/* "
+        .format(server_path) +
         "/data/web_static/releases/{}/".format(server_path)
     )
 
@@ -59,7 +61,8 @@ def do_deploy(archive_path):
         return False
 
     status_5 = run(
-        "ln -sf /data/web_static/releases/{}/ /data/web_static/current"
+        "ln -sf /data/web_static/releases/{}/ " +
+        "/data/web_static/current"
         .format(server_path)
     )
     if status_5.failed:
