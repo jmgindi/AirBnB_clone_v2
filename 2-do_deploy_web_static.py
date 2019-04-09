@@ -32,18 +32,18 @@ def do_deploy(archive_path):
         return False
 
     server_path = archive_path.split("/")[-1].split('.')[0]
-    status_2 = run("mkdir -p /data/web_static/releases/{}".format(server_path))
+    status_2 = run("mkdir -p /data/web_static/releases/{}/".format(server_path))
     if status_2.failed:
         return False
 
     run(
         "tar -xzf /tmp/{}".format(server_path + ".tgz") +
-        " -C /data/web_static/releases/{}".format(server_path)
+        " -C /data/web_static/releases/{}/".format(server_path)
     )
     run("rm -rf /tmp/{}".format(server_path))
     run(
         "mv /data/web_static/releases/{}/web_static/* ".format(server_path) +
-        "/data/web_static/releases/{}".format(server_path)
+        "/data/web_static/releases/{}/".format(server_path)
     )
 
     status_3 = run(
