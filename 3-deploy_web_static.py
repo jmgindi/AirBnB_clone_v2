@@ -7,6 +7,7 @@ import os
 env.hosts = ["35.237.8.203", "34.73.52.180"]
 env.user = "ubuntu"
 
+
 @runs_once
 def do_pack():
     """archives the web_static folder
@@ -18,7 +19,7 @@ def do_pack():
     if command.failed:
         return None
     else:
-        return command
+        return "versions/web_static_{}.tgz".format(time)
 
 
 def do_deploy(archive_path):
@@ -71,10 +72,11 @@ def do_deploy(archive_path):
 
     return True
 
+
 def deploy():
     """packs and deploys web static
     """
     tar = do_pack()
-    if tar is None:
+    if not tar:
         return False
     return do_deploy(tar)
