@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """This is the state class"""
+import models
+from models.city import City
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -23,5 +25,5 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         if environ.get('HBNB_TYPE_STORAGE') != 'db':
-            return [city for city in storage.all(
+            return [city for city in models.storage.all(
                 City).values() if city.state_id == self.id]

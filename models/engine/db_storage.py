@@ -68,7 +68,7 @@ class DBStorage:
                 for result in self.__session.query(c):
                     results.append(result)
         else:
-            result = self.__session.query(cls)
+            result = self.__session.query(eval(cls))
             results = result.all()
         # return the results as a dictionary with class.id as key
         return {"{}.{}".format(result.__class__.__name__, result.id): result
@@ -103,7 +103,11 @@ class DBStorage:
             Base.metadata.create_all(self.__engine)
             session_factory = sessionmaker(bind=self.__engine,
                                            expire_on_commit=False)
-            Session = scoped_session(session_factory)
-            self.__session = Session()
+            self.__session = scoped_session(session_factory)
         except Exception as E:
             print(E)
+
+    def close(self):
+        """calls remove on close
+        """
+        self.__session.remove()

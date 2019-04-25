@@ -68,3 +68,8 @@ class FileStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             del(self.__objects[key])
         return
+
+    def close(self):
+        """calls reload on close
+        """
+        self.reload()
