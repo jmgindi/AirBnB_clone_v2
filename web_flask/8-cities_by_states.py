@@ -15,9 +15,10 @@ def app_teardown(exc=None):
 @app.route("/cities_by_states", strict_slashes=False)
 def states_cities():
     """shows all states"""
-    states = [v for k, v in storage.all("State").items()]
-    return render_template("8-cities_by_states.html", states=states)
+    states = storage.all("State").values()
+    return render_template(
+        "8-cities_by_states.html", states=states)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
